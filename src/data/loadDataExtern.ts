@@ -1,33 +1,28 @@
-import { TodoItem } from "@/types/TodoItem";
+import { LoadingResult } from "@/types/LoadingResult";
+import { produceLocalElem } from "./loadData";
 
-export default async function loadDataExternal(quantity: number): Promise<TodoItem[]> {
+export default async function loadDataExternal(quantity: number): Promise<LoadingResult> {
     let url = 'https://dummyjson.com/todos?limit='+quantity;
 
-    let localData: TodoItem[] = [];
+    let localData: LoadingResult = {
+        todoitems: []
+    };
     await fetch(url)
             .then(res => res.json())
             .then(obj => {
                 for(let i = 0; i < obj.todos.length; i++) {
+                    debugger;
                     const rawTodo = obj.todos[i];
-                    let localTodo = produceLocalElem(
+                    const localTodo = produceLocalElem(
                                         rawTodo.id, 
                                         rawTodo.todo, 
-                                        "Detail: "+rawTodo.todo);
-                    localData.push(localTodo);
+                                        "Detail: "+rawTodo.todo,
+                                        rawTodo.completed);
+                    localData.todoitems.push(localTodo);
                 }
             })
-            .catch((err) => {
-                //handle the error somehow
+            .catch(() => {
+                localData.err = "No data available at ["+url+"]";
             });
     return localData;
-}
-
-function produceLocalElem(id: number, text: string, detail: string): TodoItem {
-    let todo: TodoItem = {
-        id: id,
-        text: text,
-        detail: "Today",
-        completed: false,
-    }
-    return todo;
 }

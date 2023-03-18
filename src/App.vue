@@ -1,13 +1,20 @@
-<script setup lang="ts">   
+<script setup lang="ts">import { ref } from 'vue';
+import { LoadingResult } from './types/LoadingResult';
+
+const isErr = ref(((window as any).data as LoadingResult).err);
+
 </script>
 
 <template>
-  <nav>
-    <router-link to="/">Todo List</router-link> |
-    <router-link to="/manage">Manage todo list</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <div v-if="isErr" class="error">{{ isErr }}</div>
+  <div v-else>
+    <nav>
+      <router-link to="/">Todo List</router-link> |
+      <router-link to="/manage">Manage todo list</router-link> |
+      <router-link to="/about">About</router-link>
+    </nav>
+    <router-view/>
+  </div>
 </template>
 
 <style lang="less">
@@ -32,4 +39,12 @@ nav {
     }
   }
 }
+
+.error {
+  background-color: red;
+  color: white;
+  font-weight: 400;
+  font-size: larger;
+}
+
 </style>
