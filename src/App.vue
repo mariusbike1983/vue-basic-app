@@ -1,14 +1,4 @@
-<script setup lang="ts">
-import { onMounted } from 'vue';
-import { type TodoItem } from './types/TodoItem';
-import { produceData } from './data/loadData';
-
-let data: TodoItem[] = [];
-onMounted(() => {
-  data = produceData(5);
-  (window as any).data = data;
-});
-   
+<script setup lang="ts">   
 </script>
 
 <template>

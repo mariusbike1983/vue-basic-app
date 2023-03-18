@@ -11,7 +11,7 @@ const props = defineProps<{
 const isItemCompleted = ref(props.completed)
 
 //Why can't I use this in the :title binding?!?
-const showTitle = computed(() => { props.completed ? 'a' : 'b'})
+//const showTitle = computed(() => { props.completed ? 'a' : 'b'})
 
 defineEmits<{
     (event: 'selected', id: number): void
@@ -24,8 +24,8 @@ defineEmits<{
         class="todo-item" 
         :class = "{ 'completed': isItemCompleted }"
         :title = "isItemCompleted ? 'Click to mark it in progress' : 'Click to mark it completed'"
-
-        @click="$emit('selected', id)" >
+        @click="$emit('selected', id)" 
+    >
             <div> {{ title }}</div>
             <div class="detail"> {{ detail }}</div>
     </div>
