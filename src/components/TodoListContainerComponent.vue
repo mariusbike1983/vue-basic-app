@@ -12,6 +12,7 @@ const props = defineProps<{
 const elementsCompleted = computed(() => props.data.filter(item => item.completed) );
 const elementsInProgress = computed(() => props.data.filter(item => !item.completed) );
 const showCompletedItems = ref(true)
+const removeCompletedEnabled = computed(() => elementsCompleted.value.length > 0)
 
 const emits = defineEmits<{
   (event: 'todoItemChange', id: number): void
@@ -24,8 +25,7 @@ function onTodoListItemChange(id: number) {
 }
 
 function onRemoveItemAction() {
-  // TODO: must determine which element is selected!!
-  emits('removeItem', 0);
+  emits('removeItem', elementsCompleted.value[0].id);
 }
 
 </script>
@@ -42,6 +42,7 @@ function onRemoveItemAction() {
           <Action 
             :text="'Remove completed items'"
             :icon="require('../../src/assets/remove.png')"
+            :disabled="!removeCompletedEnabled"
             @action-execute="onRemoveItemAction"/>
           <Action 
             :text="showCompletedItems ? 'Hide completed items': 'Show completed items'"

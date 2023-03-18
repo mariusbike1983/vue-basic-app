@@ -23,19 +23,22 @@ function addNewItem() {
   componentData.value.push(newTodoItem);
 }
 
-function toDoItemRemove(index: number) {
-  if (index >= 0 && index < componentData.value.length) {
-    const item = componentData.value[index];
-    if (confirm("Will delete "+item.text)) {
-      removeItem(item.id).then(result => {
-        if (result) {
-          componentData.value.splice(index, 1);
-        } else {
-          alert("Element could NOT be deleted");
+function toDoItemRemove(id: number) {
+  for(let i = 0; i < componentData.value.length; i++) {
+      const item = componentData.value[i];
+      if (item.id === id) {
+        if (confirm("Will delete "+item.text)) {
+          removeItem(item.id).then(result => {
+            if (result) {
+              componentData.value.splice(i, 1);
+            } else {
+              alert("Element could NOT be deleted");
+            }
+          })
+        }else {
+          alert("not deleted");
         }
-      })
-    }else {
-      alert("not deleted");
+        break;
     }
   }
 }
