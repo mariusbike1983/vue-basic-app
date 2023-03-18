@@ -4,6 +4,7 @@ import TodoListContainerComponent from '../components/TodoListContainerComponent
 import { ref } from 'vue';
 import { produceNewItem } from '../data/loadData';
 import { LoadingResult } from '@/types/LoadingResult';
+import { removeItem } from '../data/loadDataExtern';
 
 const componentData = ref(((window as any).data as LoadingResult).todoitems);
 
@@ -22,6 +23,23 @@ function addNewItem() {
   componentData.value.push(newTodoItem);
 }
 
+function toDoItemRemove(index: number) {
+  if (index >= 0 && index < componentData.value.length) {
+    const item = componentData.value[index];
+    if (confirm("Will delete "+item.text)) {
+      removeItem(item.id).then(result => {
+        if (result) {
+          componentData.value.splice(index, 1);
+        } else {
+          alert("Element could NOT be deleted");
+        }
+      })
+    }else {
+      alert("not deleted");
+    }
+  }
+}
+
 </script>
 
 <template>
@@ -30,6 +48,7 @@ function addNewItem() {
       :title = "'This is the todo-list'"
       :data = "componentData"
       @todo-item-change="toDoItemChange"
+      @remove-item="toDoItemRemove"
       @create-new-item="addNewItem"/>
   </div>
 </template>

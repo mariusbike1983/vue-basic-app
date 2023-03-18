@@ -11,7 +11,6 @@ export default async function loadDataExternal(quantity: number): Promise<Loadin
             .then(res => res.json())
             .then(obj => {
                 for(let i = 0; i < obj.todos.length; i++) {
-                    debugger;
                     const rawTodo = obj.todos[i];
                     const localTodo = produceLocalElem(
                                         rawTodo.id, 
@@ -25,4 +24,18 @@ export default async function loadDataExternal(quantity: number): Promise<Loadin
                 localData.err = "No data available at ["+url+"]";
             });
     return localData;
+}
+
+export async function removeItem(id: number): Promise<boolean> {
+    let url = 'https://dummyjson.com/todos/'+id;
+
+    let isDeleted: boolean = false;
+    await fetch(url, { method: 'DELETE' })
+            .then(res => res.json())
+            .then(obj => {
+                isDeleted = obj.isDeleted
+            }).catch((err) => {
+                isDeleted = false;
+            })
+    return isDeleted;
 }

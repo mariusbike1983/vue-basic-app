@@ -11,6 +11,7 @@ const props = defineProps<{
 
 const elementsCompleted = computed(() => props.data.filter(item => item.completed) );
 const elementsInProgress = computed(() => props.data.filter(item => !item.completed) );
+const showCompletedItems = ref(true)
 
 const emits = defineEmits<{
   (event: 'todoItemChange', id: number): void
@@ -18,15 +19,15 @@ const emits = defineEmits<{
   (event: 'removeItem', id: number): void
 }>();
 
-function onTodoListItemChange(id: number): void {
+function onTodoListItemChange(id: number) {
   emits('todoItemChange', id);
 }
 
-function onRemoveItemAction(): void {
+function onRemoveItemAction() {
   // TODO: must determine which element is selected!!
   emits('removeItem', 0);
-
 }
+
 </script>
 
 <template>
@@ -39,9 +40,13 @@ function onRemoveItemAction(): void {
             :icon="require('../../src/assets/add.png')"
             @action-execute="$emit('createNewItem')"/>
           <Action 
-            :text="'Remove selected items'"
+            :text="'Remove completed items'"
             :icon="require('../../src/assets/remove.png')"
             @action-execute="onRemoveItemAction"/>
+          <Action 
+            :text="showCompletedItems ? 'Hide completed items': 'Show completed items'"
+            :icon="require('../../src/assets/'+(showCompletedItems ? 'unchecked.png': 'checked.png'))"
+            @action-execute="showCompletedItems = !showCompletedItems"/>
         </div>
       </div>
       <TodoListComponent 
@@ -49,7 +54,7 @@ function onRemoveItemAction(): void {
         :title = "'Current todo items'"
         :data = elementsInProgress
         @item-selected = "onTodoListItemChange"/>
-      <TodoListComponent 
+      <TodoListComponent v-if="showCompletedItems"
         :type ="'COMPLETED'"
         :title = "'Completed todo items'"
         :data = elementsCompleted
