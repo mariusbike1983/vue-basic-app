@@ -2,7 +2,6 @@
 import { TodoItem } from '@/types/TodoItem';
 import TodoListContainerComponent from '../components/TodoListContainerComponent.vue';
 import { ref } from 'vue';
-import { produceNewItem } from '../data/loadData';
 import { LoadingResult } from '@/types/LoadingResult';
 import { removeItem } from '../data/loadDataExtern';
 
@@ -19,8 +18,8 @@ function toDoItemChange(id: number) {
 }
 
 function addNewItem() {
-  let newTodoItem : TodoItem = produceNewItem(componentData.value.length + 1);
-  componentData.value.push(newTodoItem);
+  const id = componentData.value.length + 1;
+  componentData.value.push(new TodoItem(id, "Text for "+id, "Detail for "+id, false));
 }
 
 function toDoItemRemove(id: number) {

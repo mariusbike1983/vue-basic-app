@@ -1,22 +1,16 @@
 import { LoadingResult } from "@/types/LoadingResult";
-import { produceLocalElem } from "./loadData";
-
+import { TodoItem } from "@/types/TodoItem";
+    
 export default async function loadDataExternal(quantity: number): Promise<LoadingResult> {
-    let url = 'https://dummyjson.com/todos?limit='+quantity;
+    const url = 'https://dummyjson.com/todos?limit='+quantity;
 
-    let localData: LoadingResult = {
-        todoitems: []
-    };
+    const localData = new LoadingResult([]);
     await fetch(url)
             .then(res => res.json())
             .then(obj => {
                 for(let i = 0; i < obj.todos.length; i++) {
                     const rawTodo = obj.todos[i];
-                    const localTodo = produceLocalElem(
-                                        rawTodo.id, 
-                                        rawTodo.todo, 
-                                        "Detail: "+rawTodo.todo,
-                                        rawTodo.completed);
+                    const localTodo = new TodoItem(rawTodo.id, rawTodo.todo, "Detail: "+rawTodo.todo, rawTodo.completed);
                     localData.todoitems.push(localTodo);
                 }
             })

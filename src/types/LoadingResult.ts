@@ -1,6 +1,10 @@
 import { TodoItem } from "./TodoItem"
 
-export type LoadingResult = {
+export class LoadingResult {
     err?:       string;
     todoitems:  TodoItem[];
+
+    constructor(todoItems: TodoItem[]) {
+        this.todoitems = todoItems;
+    }
 }

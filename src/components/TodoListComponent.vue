@@ -9,11 +9,11 @@ const props = defineProps<{
     type: 'COMPLETED' | 'INPROGRESS'
 }>();
 
-const isCompletedList = computed(() => props.type === 'COMPLETED');
-
 const emits = defineEmits<{
     (event: 'itemSelected', id: number): void
 }>();
+
+const isCompletedList = computed(() => props.type === 'COMPLETED');
 
 function onItemSelected(id: number): void {
     emits('itemSelected', id);
@@ -41,6 +41,11 @@ function onItemSelected(id: number): void {
 
 .todo-list {
     min-height: 30px;
+    max-height: 300px;
+    overflow-y: auto;
+
+    display: flex;
+    flex-direction: column;
 
     color: black;
     background-color: cadetblue;
@@ -49,9 +54,6 @@ function onItemSelected(id: number): void {
     padding-top: 5px;
     padding-bottom: 5px;
     
-    display: flex;
-    flex-direction: column;
-
     .todo-list-title {
         align-self: self-start;
     }

@@ -2,25 +2,9 @@ import { LoadingResult } from "@/types/LoadingResult";
 import { TodoItem } from "@/types/TodoItem";
 
 export function produceData(quantity: number): LoadingResult {
-    const result: LoadingResult = {
-        todoitems: []
-    }
+    const result = new LoadingResult([]);
     for(let i = 0; i<quantity; i++) {
-        result.todoitems.push(produceNewItem(i));
+        result.todoitems.push(new TodoItem(i, "Text for "+i, "Detail for "+i, i % 2 == 0));
     }
     return result;
-}
-
-export function produceNewItem(index: number) : TodoItem {
-    return produceLocalElem(index, "Text for "+index, "Detail for "+index, index % 2 == 0);
-}
-
-export function produceLocalElem(id: number, text: string, detail: string, completed: boolean): TodoItem {
-    let todo: TodoItem = {
-        id: id,
-        text: text,
-        detail: "Today",
-        completed: completed,
-    }
-    return todo;
 }

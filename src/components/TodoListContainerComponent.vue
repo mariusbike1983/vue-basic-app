@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { TodoItem } from '@/types/TodoItem';
+import Toolbar from './Toolbar.vue';
 import TodoListComponent from './TodoListComponent.vue';
 import Action from './Action.vue';
 
@@ -12,7 +13,7 @@ const props = defineProps<{
 const elementsCompleted = computed(() => props.data.filter(item => item.completed) );
 const elementsInProgress = computed(() => props.data.filter(item => !item.completed) );
 const showCompletedItems = ref(true)
-const removeCompletedEnabled = computed(() => elementsCompleted.value.length > 0)
+const removeCompletedDisabled = computed(() => elementsCompleted.value.length === 0)
 
 const emits = defineEmits<{
   (event: 'todoItemChange', id: number): void
@@ -32,24 +33,24 @@ function onRemoveItemAction() {
 
 <template>
   <h1>{{ title }}</h1>
-  <div class="container">
-      <div class="toolbar">
-        <div class="actions-container">
-          <Action 
-            :text="'Add todo item'"
-            :icon="require('../../src/assets/add.png')"
-            @action-execute="$emit('createNewItem')"/>
-          <Action 
-            :text="'Remove completed items'"
-            :icon="require('../../src/assets/remove.png')"
-            :disabled="!removeCompletedEnabled"
-            @action-execute="onRemoveItemAction"/>
-          <Action 
-            :text="showCompletedItems ? 'Hide completed items': 'Show completed items'"
-            :icon="require('../../src/assets/'+(showCompletedItems ? 'unchecked.png': 'checked.png'))"
-            @action-execute="showCompletedItems = !showCompletedItems"/>
-        </div>
-      </div>
+    <Toolbar>
+      <slot>
+        <Action 
+          :text="'Add todo item'"
+          :icon="require('../../src/assets/add.png')"
+          @action-execute="$emit('createNewItem')"/>
+        <Action 
+          :text="'Remove completed items'"
+          :icon="require('../../src/assets/remove.png')"
+          :disabled="removeCompletedDisabled"
+          @action-execute="onRemoveItemAction"/>
+        <Action 
+          :text="showCompletedItems ? 'Hide completed items': 'Show completed items'"
+          :icon="require('../../src/assets/'+(showCompletedItems ? 'unchecked.png': 'checked.png'))"
+          @action-execute="showCompletedItems = !showCompletedItems"/>
+      </slot>
+    </Toolbar>
+    <div class="container">
       <TodoListComponent 
         :type="'INPROGRESS'"
         :title = "'Current todo items'"
@@ -67,26 +68,6 @@ function onRemoveItemAction() {
 
 .container {
   border: 1px solid black;
-}
-
-.toolbar {
-  background-color: lightgray;
-  display: flex;
-  flex-direction: row;
-  border-bottom: 1px solid black;
-  padding: 2px;
-  user-select: none;
-  .title {
-    align-self: start;
-    width: auto;
-  }
-
-  .actions-container {
-    margin-left: auto;
-    display: flex;
-    flex-direction: row;
-    gap: 5px;
-  }
 }
 
 </style>
