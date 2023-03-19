@@ -10,15 +10,14 @@ const componentData = ref(((window as any).data as LoadingResult).todoitems);
 <template>
   <div class="view-manage-todo-lists">
     <h1>Manage to-do list</h1>
-
     <br>
     <Toolbar>
-      <template v-slot:actionscontainer>
+      <slot>
         <Action 
           :text="'Add todo item'"
           :icon="require('../../src/assets/add.png')"
           @action-execute="$emit('createNewItem')"/>
-      </template>
+      </slot>
     </Toolbar>
     <table>
       <thead>
