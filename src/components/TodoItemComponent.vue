@@ -59,7 +59,7 @@ defineEmits<{
     }
 
     &:hover {
-        border-color: orange;
+        border-color: salmon;
     }
 }
 
