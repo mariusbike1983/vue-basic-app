@@ -3,16 +3,22 @@ import { LoadingResult } from '@/types/LoadingResult';
 import Toolbar from '@/components/Toolbar.vue';
 import Action from '@/components/Action.vue';
 import { ref } from 'vue';
+import EditTodoItemComponent from '@/components/EditTodoItemComponent.vue';
 
 const componentData = ref(((window as any).data as LoadingResult).todoitems);
-const editWindowVisible = ref(false);
+const selectedItemId = ref(-1);
 
 function onAddNewItem() {
   alert("Will add a new item");
 }
 
 function onEditItem(id: number) {
-  editWindowVisible.value = true;
+  selectedItemId.value = id;
+}
+
+function onCommitEditItem(text: string, detail: string, completed: boolean){
+  alert(text+" : "+detail +" : "+completed);
+  selectedItemId.value = -1;
 }
 
 function onRemoveItem(id: number) {
@@ -65,11 +71,12 @@ function onRemoveItem(id: number) {
       </tbody>
     </table>
     <Teleport to="body">
-      <div 
-        v-show="editWindowVisible" 
-        class="edit-window"
-        @click="editWindowVisible = !editWindowVisible">
-      </div>
+      <EditTodoItemComponent  
+        v-show="selectedItemId >= 0"
+        :selected-id="selectedItemId"
+        @commit="onCommitEditItem"
+        @cancel="selectedItemId = -1"
+        />
     </Teleport>
   </div>
 </template>
@@ -90,7 +97,6 @@ th {
     cursor: pointer;
   }
 }
-
 .actions {
     width: calc(30%);
   .actions-container {
@@ -114,17 +120,6 @@ table {
   overflow-y: auto;
   display: block;
   width: 100%;
-}
-
-.edit-window {
-  width: 300px;
-  height: 300px;
-  background-color: lightgray;
-  border: 1px solid black;
-  position: absolute;
-  top: calc(50% - 150px);
-  left: calc(50% - 150px);
-  box-shadow: 5px 5px 5px gray;
 }
 
 </style>
