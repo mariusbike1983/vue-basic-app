@@ -37,16 +37,19 @@ function onRemoveItemAction() {
       <slot>
         <Action 
           :text="'Add todo item'"
+          :title="'Add todo item'"
           :icon="require('../../src/assets/add.png')"
           @action-execute="$emit('createNewItem')"/>
         <Action 
           :text="'Remove completed items'"
-          :icon="require('../../src/assets/remove.png')"
+          :title="'Remove completed items'"
+          :icon="require('../../src/assets/delete.png')"
           :disabled="removeCompletedDisabled"
           @action-execute="onRemoveItemAction"/>
         <Action 
           :text="showCompletedItems ? 'Hide completed items': 'Show completed items'"
-          :icon="require('../../src/assets/'+(showCompletedItems ? 'unchecked.png': 'checked.png'))"
+          :title="showCompletedItems ? 'Hide completed items': 'Show completed items'"
+          :icon="require('../../src/assets/'+(showCompletedItems ? 'hide.png': 'show.png'))"
           @action-execute="showCompletedItems = !showCompletedItems"/>
       </slot>
     </Toolbar>

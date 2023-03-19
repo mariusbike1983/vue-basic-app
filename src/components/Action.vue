@@ -1,7 +1,8 @@
 <script setup lang="ts">
 defineProps<{
-    text: string
+    text?: string
     icon?: string
+    title: string
 }>();
 
 defineEmits<{
@@ -11,20 +12,21 @@ defineEmits<{
 
 <template>
   <button class="action"
-      @click="$emit('action-execute')">
+      @click="$emit('action-execute')"
+      :title="title">
       <img v-if="icon" class="icon" :src="icon"/>
-      <span>{{ text }}</span>
+      <span v-if="text">{{ text }}</span>
   </button>
 </template>
 
 <style scoped lang="less">
   .action {
     align-self: end;
-    background-color: slategray;
-    color: antiquewhite;
+    background-color: transparent;
+    color: black;
     
     text-align: center;
-    border: 2px solid green;
+    border: none;
     cursor: pointer;
     user-select: none;
     padding: 2px;
@@ -32,7 +34,7 @@ defineEmits<{
 
     &:hover:not(:disabled) {
       background-color: salmon;
-      border-color: white;
+      border-color: none;
       color: black;
     }
 
