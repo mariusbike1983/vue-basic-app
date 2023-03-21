@@ -23,8 +23,13 @@ watch(item, (newValue) => {
     _text.value = newValue.text;
     _detail.value = newValue.detail;
     _completed.value = newValue.completed;
+  } else {
+    _text.value = "";
+    _detail.value = "";
+    _completed.value = false;
   }
 })
+
 
 </script>
 
@@ -47,6 +52,7 @@ watch(item, (newValue) => {
 .edit-window {
   width: 300px;
   height: 300px;
+  text-align: left;
   background-color: lightgrey;
   border: 1px solid black;
   position: absolute;

@@ -4,12 +4,14 @@ import Toolbar from '@/components/Toolbar.vue';
 import Action from '@/components/Action.vue';
 import { ref } from 'vue';
 import EditTodoItemComponent from '@/components/EditTodoItemComponent.vue';
+import { TodoItem } from '@/types/TodoItem';
 
 const componentData = ref(((window as any).data as LoadingResult).todoitems);
 const selectedItemId = ref(-1);
 
 function onAddNewItem() {
-  alert("Will add a new item");
+  const id = componentData.value.length + 1;
+  selectedItemId.value = id;
 }
 
 function onEditItem(id: number) {
@@ -17,7 +19,7 @@ function onEditItem(id: number) {
 }
 
 function onCommitEditItem(text: string, detail: string, completed: boolean){
-  alert(text+" : "+detail +" : "+completed);
+  componentData.value.push(new TodoItem(selectedItemId.value, text, detail, completed));
   selectedItemId.value = -1;
 }
 
@@ -70,13 +72,12 @@ function onRemoveItem(id: number) {
         </tr>
       </tbody>
     </table>
-    <Teleport to="body">
+    <Teleport to="#app">
       <EditTodoItemComponent  
         v-show="selectedItemId >= 0"
         :selected-id="selectedItemId"
         @commit="onCommitEditItem"
-        @cancel="selectedItemId = -1"
-        />
+        @cancel="selectedItemId = -1"/>
     </Teleport>
   </div>
 </template>
