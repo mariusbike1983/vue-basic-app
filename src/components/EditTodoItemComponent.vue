@@ -29,8 +29,6 @@ watch(item, (newValue) => {
     _completed.value = false;
   }
 })
-
-
 </script>
 
 <template>
